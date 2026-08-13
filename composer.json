@@ -1,0 +1,9 @@
+{
+    "name": "aplicacao/cruzamento-excel",
+    "description": "Aplicacao PHP para cruzamento de codigos entre arquivos Excel",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "phpoffice/phpspreadsheet": "^5.8"
+    }
+}
