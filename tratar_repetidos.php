@@ -245,6 +245,12 @@ try {
                         </div>
 
                         <div class="form-group form-group-full">
+                            <label for="texto_sem_tratamento">Texto para registros Sem Tratamento / Não Encontrados (Opcional)</label>
+                            <input type="text" id="texto_sem_tratamento" name="texto_sem_tratamento" placeholder="Ex: Não encontrado / Sem tratamento" value="<?= htmlEscape($_POST['texto_sem_tratamento'] ?? '') ?>">
+                            <small>Este texto será gravado na coluna de destino caso o registro não seja localizado ou nenhuma regra seja aplicada.</small>
+                        </div>
+
+                        <div class="form-group form-group-full">
                             <label for="codigos_especificos">Filtro por Códigos Específicos (Opcional)</label>
                             <textarea id="codigos_especificos" name="codigos_especificos" class="code-input" placeholder="Cole os códigos aqui separando por linha, vírgula ou ponto e vírgula..."></textarea>
                             <small>Se informado, apenas estes códigos serão buscados no cruzamento com a nova planilha.</small>

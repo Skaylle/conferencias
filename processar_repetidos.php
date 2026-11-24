@@ -46,6 +46,9 @@ try {
         throw new RuntimeException('Selecione a aba da terceira planilha.');
     }
 
+    // Captura o texto para registros não tratados (se informado pelo usuário)
+    $textoSemTratamento = trim((string)($_POST['texto_sem_tratamento'] ?? ''));
+
     // Processar códigos manuais/específicos informados no textarea (se houver)
     $rawCodigos = $_POST['codigos_especificos'] ?? '';
     $codigosEspecificos = [];
@@ -111,6 +114,14 @@ try {
 
         if (!array_key_exists($codigoNormalizado, $indiceReferencia)) {
             $semCorrespondencia++;
+
+            if ($textoSemTratamento !== '') {
+                setSpreadsheetCellAsString(
+                    $worksheetBase,
+                    $processingConfig['result_column'] . $linha,
+                    $textoSemTratamento
+                );
+            }
             continue;
         }
 
@@ -122,13 +133,20 @@ try {
             $treatmentRules
         );
 
-        if ($resultadoRegras['status'] === 'no_rule') {
-            $semRegraAplicavel++;
-            continue;
-        }
+        if ($resultadoRegras['status'] === 'no_rule' || $resultadoRegras['status'] === 'inconsistent') {
+            if ($resultadoRegras['status'] === 'no_rule') {
+                $semRegraAplicavel++;
+            } else {
+                $inconsistencias++;
+            }
 
-        if ($resultadoRegras['status'] === 'inconsistent') {
-            $inconsistencias++;
+            if ($textoSemTratamento !== '') {
+                setSpreadsheetCellAsString(
+                    $worksheetBase,
+                    $processingConfig['result_column'] . $linha,
+                    $textoSemTratamento
+                );
+            }
             continue;
         }
 
